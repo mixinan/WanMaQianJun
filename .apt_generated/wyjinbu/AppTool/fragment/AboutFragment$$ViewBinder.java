@@ -8,10 +8,10 @@ import butterknife.ButterKnife.ViewBinder;
 public class AboutFragment$$ViewBinder<T extends wyjinbu.AppTool.fragment.AboutFragment> implements ViewBinder<T> {
   @Override public void bind(final Finder finder, final T target, Object source) {
     View view;
-    view = finder.findRequiredView(source, 2131034128, "field 'tvGank'");
-    target.tvGank = finder.castView(view, 2131034128, "field 'tvGank'");
     view = finder.findRequiredView(source, 2131034127, "field 'tvDaiMaJia'");
     target.tvDaiMaJia = finder.castView(view, 2131034127, "field 'tvDaiMaJia'");
+    view = finder.findRequiredView(source, 2131034128, "field 'tvGank'");
+    target.tvGank = finder.castView(view, 2131034128, "field 'tvGank'");
     view = finder.findRequiredView(source, 2131034129, "field 'tvSatan'");
     target.tvSatan = finder.castView(view, 2131034129, "field 'tvSatan'");
     view = finder.findRequiredView(source, 2131034125, "field 'tvVersion'");
@@ -19,8 +19,8 @@ public class AboutFragment$$ViewBinder<T extends wyjinbu.AppTool.fragment.AboutF
   }
 
   @Override public void unbind(T target) {
-    target.tvGank = null;
     target.tvDaiMaJia = null;
+    target.tvGank = null;
     target.tvSatan = null;
     target.tvVersion = null;
   }

@@ -9,6 +9,7 @@ import wyjinbu.AppTool.fragment.AboutFragment;
 import wyjinbu.AppTool.fragment.AndroidFragment;
 import wyjinbu.AppTool.fragment.RandomFragment;
 import wyjinbu.AppTool.fragment.WelfareFragment;
+import wyjinbu.AppTool.util.ToastUtil;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,7 +23,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements OnClickListener, OnPageChangeListener {
 	private ViewPager mViewPager;
@@ -38,12 +38,14 @@ public class MainActivity extends FragmentActivity implements OnClickListener, O
 		//去除标题栏图标
 		getActionBar().setDisplayShowHomeEnabled(false);
 		setContentView(R.layout.activity_main);
-
+		
 		initView();
 		initData();
 
 		mViewPager.setAdapter(mAdapter);
 		mViewPager.addOnPageChangeListener(this);
+		//解决不相邻的Fragment自动销毁问题
+		mViewPager.setOffscreenPageLimit(3);
 	}
 
 	private void initData() {
@@ -92,24 +94,24 @@ public class MainActivity extends FragmentActivity implements OnClickListener, O
 
 	@Override
 	public void onClick(View v) {
+		
 		resetOtherTabs();
 
 		switch (v.getId()) {
 		case R.id.tab_welfare:
 			//当前的Fragment刷新数据
-			currentFragmentRefresh();
+//			currentFragmentRefresh();
 			mTabIndicators.get(0).setIconAlpha(1.0f);
 			mViewPager.setCurrentItem(0,false);
 			break;
 		case R.id.tab_Android:
 			//当前的Fragment刷新数据
-			currentFragmentRefresh();
+//			currentFragmentRefresh();
 			mTabIndicators.get(1).setIconAlpha(1.0f);
 			mViewPager.setCurrentItem(1,false);
 			break;
 		case R.id.tab_random:
-			//当前的Fragment刷新数据
-			currentFragmentRefresh();
+//			currentFragmentRefresh();
 			mTabIndicators.get(2).setIconAlpha(1.0f);
 			mViewPager.setCurrentItem(2,false);
 			break;
@@ -120,18 +122,33 @@ public class MainActivity extends FragmentActivity implements OnClickListener, O
 		}
 	}
 	
-	private void currentFragmentRefresh() {
-		if (mViewPager.getCurrentItem()==0) {
-			WelfareFragment.newInstance().initData();
-		}
-		if (mViewPager.getCurrentItem()==1) {
-			AndroidFragment.newInstance().initData();
-		}
-		if (mViewPager.getCurrentItem()==2) {
-			RandomFragment.newInstance().initData();
+	
+	/**
+	 * 导航按钮颜色全部清空
+	 */
+	private void resetOtherTabs() {
+		for (int i = 0; i < mTabIndicators.size(); i++) {
+			mTabIndicators.get(i).setIconAlpha(0);
 		}
 	}
+	
+	
+	/**
+	 * 当前的Fragment刷新数据
+	 */
+//	private void currentFragmentRefresh() {
+//		if (mViewPager.getCurrentItem()==0) {
+//			WelfareFragment.newInstance().initData();
+//		}
+//		if (mViewPager.getCurrentItem()==1) {
+//			AndroidFragment.newInstance().initData();
+//		}
+//		if (mViewPager.getCurrentItem()==2) {
+//			RandomFragment.newInstance().initData();
+//		}
+//	}
 
+	
 	/**
 	 * 当前列表滑动到顶部
 	 */
@@ -147,11 +164,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener, O
 		}
 	}
 
-	private void resetOtherTabs() {
-		for (int i = 0; i < mTabIndicators.size(); i++) {
-			mTabIndicators.get(i).setIconAlpha(0);
-		}
-	}
+	
 
 	@Override
 	public void onPageScrollStateChanged(int arg0) {
@@ -196,7 +209,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener, O
 
 		case R.id.action_scan:
 			//	TODO 扫描二维码
-			Toast.makeText(this, "即将完善该功能", Toast.LENGTH_SHORT).show();
+			ToastUtil.showToast(this, "即将完善该功能");
 			break;
 			
 		case R.id.action_qq:
@@ -247,8 +260,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener, O
 	protected void onStop() {
 		super.onStop();
 		GankApplication.getRequestQueue().cancelAll("wmqj");
+		//去掉Toast延迟效果
+		ToastUtil.cancelToast();
 	}
 
+	
 	/**
 	 * 再按一次退出应用
 	 */
@@ -260,6 +276,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener, O
 			finish();
 		}
 		lastBackTime = System.currentTimeMillis();
-		Toast.makeText(this, "再按一次退出",Toast.LENGTH_SHORT).show();
+		ToastUtil.showToast(this, "再按一次退出");
 	}
 }

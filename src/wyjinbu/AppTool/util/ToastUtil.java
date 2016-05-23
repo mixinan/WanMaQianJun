@@ -4,15 +4,9 @@ import android.content.Context;
 import android.widget.Toast;
 
 public class ToastUtil {
-	private Toast toast;
+	private static Toast toast;
 	
-	
-	public ToastUtil() {
-		super();
-	}
-
-
-	public void showToast(Context context,String string){
+	public static void showToast(Context context,String string){
 		if (toast == null) {
 			toast = Toast.makeText(context, string, Toast.LENGTH_SHORT);
 		}else {
@@ -21,7 +15,7 @@ public class ToastUtil {
 		toast.show();
 	}
 	
-	public void cancelToast(){
+	public static void cancelToast(){
 		if (toast!=null) {
 		toast.cancel();
 		}
